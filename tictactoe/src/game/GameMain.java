@@ -30,6 +30,14 @@ public class GameMain
 	 * Internal monitor for checking whether there is a winner. "0" if no player has won the game, "1" if player 1 has won, "2" if player 2 has won.
 	 */
 	private int winner = 0;
+	/**
+	 * Counter for number of games won by player 1
+	 */
+	private int p1Wins = 0;
+	/**
+	 * Counter for number of games won by player 2:  
+	 */
+	private int p2Wins = 0;
 	
 	/**
 	 * Constructor for the game. Prints the initial board state and starts the game beginning with player 1.
@@ -102,9 +110,23 @@ public class GameMain
 		}
 		
 		printBoard();
-		if (winner == 1) System.out.println("Player 1 wins!");
-		else if (winner == 2) System.out.println("Player 2 wins!");
-		else if (checkDraw()) System.out.println("Draw! Nobody Wins!");
+		if (winner == 1) 
+		{
+			System.out.println("Player 1 wins!");
+			p1Wins++;
+			gameOver();
+		}
+		else if (winner == 2) 
+		{	
+			System.out.println("Player 2 wins!");
+			p2Wins++;
+			gameOver();
+		}
+		else if (checkDraw())
+		{	
+			System.out.println("Draw! Nobody Wins!");
+			gameOver();
+		}
 		else turn();
 	}
 
@@ -130,6 +152,7 @@ public class GameMain
 		else
 		{
 			System.out.println("Invalid entry. Input number corresponding to desired space.");
+			printBoard();
 			turn();
 		}
 	}
@@ -172,4 +195,30 @@ public class GameMain
 		}
 		return true;
 	}
+	
+	
+	private void gameOver()
+	{
+		System.out.println("Current Score:");
+		System.out.println("Player 1: " + p1Wins);
+		System.out.println("Player 2: " + p2Wins);
+		while (1 + 1 == 2)
+		{
+			System.out.println("Would you like to play again? (y/n):");
+			String r = sc.next().toLowerCase();
+			if (r.equals("y"))
+			{
+				new GameMain();
+			}
+			else if (r.equals("n"))
+			{
+				System.exit(0);
+			}
+			else
+			{
+				System.out.println("Invalid response.");
+			}
+		}
+	}
 }
+
