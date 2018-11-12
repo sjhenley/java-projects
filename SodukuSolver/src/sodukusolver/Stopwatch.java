@@ -1,5 +1,10 @@
 package sodukusolver;
 
+/**
+ * Code taken from a Com S 228 course at Iowa State University
+ * @author Iowa State University
+ *
+ */
 public class Stopwatch {
 	private long elapsedTime = 0;
 	private long mostRecentStartTime = -1;

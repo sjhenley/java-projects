@@ -2,12 +2,33 @@ package sodukusolver;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * An automated process for solving a Sudoku puzzle of any size square grid using a backtracking algorithm.
+ * @author Sam Henley
+ *
+ */
 public class SodukuSolver
 {
+	/**
+	 * Current state of the puzzle grid
+	 */
 	private int[][] grid;
+	/**
+	 * Times how long the algorithm takes to solve the puzzle
+	 */
 	private Stopwatch timer;
+	/**
+	 * length of one side of the puzzle grid
+	 */
 	private int size;
 	
+	/**
+	 * Initializes data fields and ensures the input grid is a valid Sudoku puzzle grid.
+	 * A Sudoku puzzle grid is valid if: A) the lengths of all sides are equal, and
+	 * B) All numbers in the grid are {@code 0 < m < s}, where {@code m} is a number, and
+	 * {@code s} is the length of on side of the grid (0's represent unassigned values).
+	 * @param grid the Sudoku puzzle to solve
+	 */
 	public SodukuSolver(int[][] grid)
 	{
 		if (grid.length != grid[0].length) throw new InvalidGridException("Sudoku grid must be a square!");
@@ -26,15 +47,25 @@ public class SodukuSolver
 		
 	}
 	
+	/**
+	 * Initiates solving of puzzle
+	 */
 	public void start()
 	{
 		timer.start();
 		if (solve()) finished();
 		else
-			System.out.println("ERROR: puzzle not solved!");
+			System.out.println("A solution for the given puzzle could not be found!");
 	}
 	
-	public boolean solve()
+	/**
+	 * Recursively solves the puzzle by checking if a certain value is valid in a square, then continues to solve
+	 * assuming that value is correct. A value is valid if that value is not present in that square's row, column,
+	 * or box (the box is {@code sqrt(size)}, e.g. in a 9x9 puzzle, the box is 3x3). If the value turns out to be
+	 * invalid, the next possible value is stored and solving continues.
+	 * @return true if the solve was successful, false otherwise
+	 */
+	private boolean solve()
 	{
 		if (findUnassignedCell() == null) return true;
 		
@@ -58,6 +89,13 @@ public class SodukuSolver
 		return false;
 	}
 	
+	/**
+	 * Tests if a value is valid in a certain square. See solve() for the definition of valid.
+	 * @param r the row of the square to check
+	 * @param c the column of a square to check
+	 * @param trial the value to try
+	 * @return true if the value is valid, false otherwise
+	 */
 	private boolean isSafe(int r, int c, int trial)
 	{
 		int sqrt = (int) Math.sqrt(size);
@@ -81,7 +119,11 @@ public class SodukuSolver
 
 		}
 	
-	public int[] findUnassignedCell()
+	/**
+	 * Searches the grid for an unassigned value (if the value of the square == 0)
+	 * @return [row, column] of an unassigned square
+	 */
+	private int[] findUnassignedCell()
 	{
 		for (int row = 0 ; row < size ; row++)
 		{
@@ -91,7 +133,10 @@ public class SodukuSolver
 		return null;
 	}
 	
-	public void printGrid()
+	/**
+	 * Prints the grid to the console.
+	 */
+	private void printGrid()
 	{
 		for (int row = 0 ; row < size ; row++)
 		{
@@ -104,6 +149,9 @@ public class SodukuSolver
 		}
 	}
 	
+	/**
+	 * Runs when the algorithm has finished solving the puzzle.
+	 */
 	private void finished()
 	{
 		timer.stop();
@@ -111,7 +159,10 @@ public class SodukuSolver
 		printGrid();
 	}
 		
-	
+	/**
+	 * Driver method where the grid is input and the solver is started.
+	 * @param args
+	 */
 	public static void main(String[] args)
 	{
 		int[][] grid = new int[][] 
